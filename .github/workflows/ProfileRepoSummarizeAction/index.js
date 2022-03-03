@@ -20,7 +20,7 @@ const fs = require('fs');
     const profiles = [];
   
     // loop through available profiles synchronously
-    Promise.all(customProfilesRepoContent.data.map(async (profile) => {
+    await Promise.all(customProfilesRepoContent.data.map(async (profile) => {
       // return if element not directory
       if (profile.type != 'dir') return;
 
