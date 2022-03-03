@@ -2,15 +2,6 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const fs = require('fs');
 
-class CommunityProfile {
-  constructor(name, description, creators, imageUrl) {
-    this.name = name;
-    this.description = description;
-    this.creators = creators;
-    this.imageUrl = imageUrl;
-  }
-}
-
 (async () => {
   try {
     const githubToken = process.env['token'];
@@ -60,6 +51,12 @@ class CommunityProfile {
       // console.log(`imageUrl: ${imageUrl}`);
       
       profiles.push(new CommunityProfile(profile.name, aboutFile.Description, aboutFile.Authors, imageUrl ? imageUrl : ""));
+      profiles.push({
+        name: profile.name,
+        description: aboutFile.Description,
+        authors: aboutFile.authors,
+        imageUrl: imageUrl ? imageUrl : "",
+      });
     });
 
     fs.writeFile('./profiles.json', JSON.stringify(profiles, undefined, 2), (err) => {
