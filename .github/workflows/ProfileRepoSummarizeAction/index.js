@@ -41,22 +41,24 @@ class CommunityProfile {
 
       const aboutFilePath = (profileContent.data.find((file) => file.name == 'about.json'))?.path;
       if (aboutFilePath == undefined) return;
-      console.log(`aboutFilePath: ${aboutFilePath}`);
 
       const aboutFileContent = await client.rest.repos.getContent({
         owner,
         repo,
         path: aboutFilePath,
       });
-      console.log(`aboutFileContent: ${JSON.stringify(aboutFileContent, undefined, 2)}`);
+      // console.log(`aboutFileContent: ${JSON.stringify(aboutFileContent, undefined, 2)}`);
 
       const aboutFile = JSON.parse(Buffer.from(aboutFileContent.data.content, aboutFileContent.data.encoding).toString());
-      console.log(aboutFileContent.data.content);
-      console.log(Buffer.from(aboutFileContent.data.content, aboutFileContent.data.encoding).toString());
-      console.log(aboutFile.Authors);
-      console.log(aboutFile.Description);
+      // console.log(aboutFileContent.data.content);
+      // console.log(Buffer.from(aboutFileContent.data.content, aboutFileContent.data.encoding).toString());
+      // console.log(aboutFile.Authors);
+      // console.log(aboutFile.Description);
+
+      let imageUrl = (profileContent.data.find((file) => file.name.endsWith('.jpg') || file.name.endsWith('.png')))['download_url'];
+      console.log(`imageUrl: ${imageUrl}`);
       
-      // profiles.push(new CommunityProfile(el.name, description, creators, imageUrl));
+      profiles.push(new CommunityProfile(profile.name, aboutFile.Description, aboutFile.Authors, imageUrl));
     });
 
   } catch (error) {
