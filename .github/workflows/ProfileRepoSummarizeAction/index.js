@@ -40,14 +40,21 @@ class CommunityProfile {
       console.log(`profile ${profile.path} data:\n\n${JSON.stringify(profileContent.data, undefined, 2)}`);
 
       const aboutFilePath = (profileContent.data.find((file) => file.name == 'about.json'))?.path;
-      const aboutFile = await client.rest.repos.getContent({
+      console.log(`aboutFilePath: ${aboutFilePath}`);
+
+      const aboutFileContent = await client.rest.repos.getContent({
         owner,
         repo,
         path: aboutFilePath,
       });
-      console.log(aboutFile.data.content);
-      console.log(Buffer.from(aboutFile.data.content, aboutFile.data.encoding).toString());
-
+      console.log(`aboutFileContent: ${aboutFileContent}`);
+      
+      const aboutFile = JSON.parse(Buffer.from(aboutFileContent.data.content, aboutFileContent.data.encoding).toString());
+      console.log(aboutFileContent.data.content);
+      console.log(Buffer.from(aboutFileContent.data.content, aboutFileContent.data.encoding).toString());
+      console.log(aboutFile.Authors);
+      console.log(aboutFile.Description);
+      
       // profiles.push(new CommunityProfile(el.name, description, creators, imageUrl));
     });
 
