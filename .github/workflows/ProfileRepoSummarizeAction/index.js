@@ -45,7 +45,7 @@ class CommunityProfile {
         repo,
         path: aboutFilePath,
       });
-      console.log(aboutFile);
+      console.log(atob(aboutFile.data.content));
 
       // profiles.push(new CommunityProfile(el.name, description, creators, imageUrl));
     });
