@@ -19,8 +19,8 @@ const fs = require('fs');
 
     const profiles = [];
   
-    // loop through available profiles
-    customProfilesRepoContent.data.forEach(async (profile) => {
+    // loop through available profiles synchronously
+    Promise.all(customProfilesRepoContent.data.map(async (profile) => {
       // return if element not directory
       if (profile.type != 'dir') return;
 
@@ -56,7 +56,7 @@ const fs = require('fs');
         authors: aboutFile.authors,
         imageUrl: imageUrl ? imageUrl : "",
       });
-    });
+    }));
 
     console.log(`profiles: ${profiles}`);
 
