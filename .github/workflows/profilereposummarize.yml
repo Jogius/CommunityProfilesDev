@@ -16,11 +16,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js 16
-      working-directory: ./.github/actions/ProfileRepoSummarizeAction
       uses: actions/setup-node@v2
       with:
         node-version: 16
         cache: 'npm'
+        cache-dependency-path:  ./.github/actions/ProfileRepoSummarizeAction
     - name: Install dependencies
       working-directory: ./.github/actions/ProfileRepoSummarizeAction
       run: npm ci
