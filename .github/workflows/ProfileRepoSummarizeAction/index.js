@@ -55,7 +55,7 @@ class CommunityProfile {
       // console.log(aboutFile.Authors);
       // console.log(aboutFile.Description);
 
-      let imageUrl = (profileContent.data.find((file) => file.name.endsWith('.jpg') || file.name.endsWith('.png')))['download_url'];
+      let imageUrl = (profileContent.data.find((file) => file.name.endsWith('.jpg') || file.name.endsWith('.png')))?.download_url;
       console.log(`imageUrl: ${imageUrl}`);
       
       profiles.push(new CommunityProfile(profile.name, aboutFile.Description, aboutFile.Authors, imageUrl));
