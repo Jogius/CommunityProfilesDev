@@ -26,7 +26,7 @@ class CommunityProfile {
     });
   
     // loop through available profiles
-    customProfilesRepoContent.data.forEach((el) => {
+    customProfilesRepoContent.data.forEach(async (el) => {
       if (el.type != 'dir') return;
 
       const profileContent = await client.rest.repos.getContent({
