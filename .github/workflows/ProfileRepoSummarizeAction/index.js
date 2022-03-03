@@ -22,12 +22,16 @@ class CommunityProfile {
     const client = github.getOctokit(githubToken);
     console.log('created client (octokit)');
 
-    let org = github.context.payload.repository.owner.name;
-    console.log(`org: ${org}`);
-    let repoName = github.context.payload.repository.name;
-    console.log(`repoName: ${repoName}`);
+    let owner = github.context.payload.repository.owner.name;
+    console.log(`org: ${owner}`);
+    let repo = github.context.payload.repository.name;
+    console.log(`repoName: ${repo}`);
   
-    const profiles = await client.rest.repos.getContent(org, repoName, "CustomProfiles");
+    const profiles = await client.rest.repos.getContent({
+      owner,
+      repo,
+      path: "CustomProfiles",
+    });
   
     console.log(`client.rest.repos.getContent() returned:\n\n${JSON.stringify(profiles, undefined, 2)}`);
   
