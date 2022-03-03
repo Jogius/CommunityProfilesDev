@@ -16,8 +16,8 @@ class CommunityProfile {
     const githubToken = process.env['token'];
     console.log(`token: ${githubToken}`);
     // Get the JSON webhook payload for the event that triggered the workflow
-    const payload = JSON.stringify(github.context.payload, undefined, 2);
-    console.log(`The event payload:\n\n${payload}`);
+    const context = JSON.stringify(github.context, undefined, 2);
+    console.log(`The context:\n\n${context}`);
   
     const client = github.getOctokit(githubToken);
     console.log('created client (octokit)');
