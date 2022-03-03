@@ -50,7 +50,6 @@ const fs = require('fs');
       let imageUrl = (profileContent.data.find((file) => file.name.endsWith('.jpg') || file.name.endsWith('.png')))?.download_url;
       // console.log(`imageUrl: ${imageUrl}`);
       
-      profiles.push(new CommunityProfile(profile.name, aboutFile.Description, aboutFile.Authors, imageUrl ? imageUrl : ""));
       profiles.push({
         name: profile.name,
         description: aboutFile.Description,
