@@ -19,8 +19,12 @@ class CommunityProfile {
     console.log(`The event payload:\n\n${payload}`);
   
     const client = github.getOctokit(githubToken);
-    let org = github.context.repo.owner;
-    let repoName = github.context.repo.repo;
+    console.log('created client (octokit)');
+
+    let org = github.context.repository.owner.name;
+    console.log(`org: ${org}`);
+    let repoName = github.context.repository.name;
+    console.log(`repoName: ${repoName}`);
   
     const profiles = await client.rest.repos.getContent(org, repoName, "CustomProfiles");
   
