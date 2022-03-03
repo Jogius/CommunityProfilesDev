@@ -47,8 +47,8 @@ class CommunityProfile {
         repo,
         path: aboutFilePath,
       });
-      console.log(`aboutFileContent: ${aboutFileContent}`);
-      
+      console.log(`aboutFileContent: ${JSON.stringify(aboutFileContent, undefined, 2)}`);
+
       const aboutFile = JSON.parse(Buffer.from(aboutFileContent.data.content, aboutFileContent.data.encoding).toString());
       console.log(aboutFileContent.data.content);
       console.log(Buffer.from(aboutFileContent.data.content, aboutFileContent.data.encoding).toString());
