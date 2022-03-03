@@ -20,10 +20,10 @@ jobs:
       with:
         node-version: 16
         cache: 'npm'
-        cache-dependency-path: ./.github/actions/TestJS
+        cache-dependency-path: ./.github/workflows/TestJS
     - name: Install dependencies
-      working-directory: ./.github/actions/TestJS
+      working-directory: ./.github/workflows/TestJS
       run: npm ci
     - name: Run script
-      working-directory: ./.github/actions/TestJS
+      working-directory: ./.github/workflows/TestJS
       run: npm run start

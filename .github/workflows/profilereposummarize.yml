@@ -20,10 +20,10 @@ jobs:
       with:
         node-version: 16
         cache: 'npm'
-        cache-dependency-path:  ./.github/actions/ProfileRepoSummarizeAction
+        cache-dependency-path:  ./.github/workflows/ProfileRepoSummarizeAction
     - name: Install dependencies
-      working-directory: ./.github/actions/ProfileRepoSummarizeAction
+      working-directory: ./.github/workflows/ProfileRepoSummarizeAction
       run: npm ci
     - name: Run script
-      working-directory: ./.github/actions/ProfileRepoSummarizeAction
+      working-directory: ./.github/workflows/ProfileRepoSummarizeAction
       run: npm run start
