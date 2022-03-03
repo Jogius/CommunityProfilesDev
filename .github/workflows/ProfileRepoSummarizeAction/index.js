@@ -24,18 +24,30 @@ class CommunityProfile {
       repo,
       path: "CustomProfiles",
     });
+
+    const profiles = [];
   
     // loop through available profiles
-    customProfilesRepoContent.data.forEach(async (el) => {
-      if (el.type != 'dir') return;
+    customProfilesRepoContent.data.forEach(async (profile) => {
+      // return if element not directory
+      if (profile.type != 'dir') return;
 
       const profileContent = await client.rest.repos.getContent({
         owner,
         repo,
-        path: el.path,
+        path: profile.path,
       });
-      console.log(`profile ${el.path} data:\n\n${JSON.stringify(profileContent.data, undefined, 2)}`);
+      console.log(`profile ${profile.path} data:\n\n${JSON.stringify(profileContent.data, undefined, 2)}`);
 
+      const aboutFilePath = (profileContent.data.find((file) => file.name == 'about.json'))?.path;
+      const aboutFile = await client.rest.repos.getContent({
+        owner,
+        repo,
+        path: aboutFilePath,
+      });
+      console.log(aboutFile);
+
+      // profiles.push(new CommunityProfile(el.name, description, creators, imageUrl));
     });
 
   } catch (error) {
