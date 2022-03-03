@@ -1,5 +1,6 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
+const fs = require('fs');
 
 class CommunityProfile {
   constructor(name, description, creators, imageUrl) {
@@ -56,9 +57,16 @@ class CommunityProfile {
       // console.log(aboutFile.Description);
 
       let imageUrl = (profileContent.data.find((file) => file.name.endsWith('.jpg') || file.name.endsWith('.png')))?.download_url;
-      console.log(`imageUrl: ${imageUrl}`);
+      // console.log(`imageUrl: ${imageUrl}`);
       
-      profiles.push(new CommunityProfile(profile.name, aboutFile.Description, aboutFile.Authors, imageUrl));
+      profiles.push(new CommunityProfile(profile.name, aboutFile.Description, aboutFile.Authors, imageUrl ? imageUrl : ""));
+    });
+
+    fs.writeFile('./profiles.json', JSON.stringify(profiles, undefined, 2), (err) => {
+      if (err) {
+        core.setFailed(err.message);
+        return;
+      }
     });
 
   } catch (error) {

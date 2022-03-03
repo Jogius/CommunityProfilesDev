@@ -29,3 +29,8 @@ jobs:
       run: npm run start
       env: # Pass GitHub Token to script
         token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Save artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: profiles.json
+        path: ./.github/workflows/ProfileRepoSummarizeAction/profiles.json
