@@ -40,6 +40,7 @@ class CommunityProfile {
       console.log(`profile ${profile.path} data:\n\n${JSON.stringify(profileContent.data, undefined, 2)}`);
 
       const aboutFilePath = (profileContent.data.find((file) => file.name == 'about.json'))?.path;
+      if (aboutFilePath == undefined) return;
       console.log(`aboutFilePath: ${aboutFilePath}`);
 
       const aboutFileContent = await client.rest.repos.getContent({
