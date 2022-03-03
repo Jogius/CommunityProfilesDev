@@ -58,6 +58,8 @@ const fs = require('fs');
       });
     });
 
+    console.log(`profiles: ${profiles}`);
+
     fs.writeFile('./profiles.json', JSON.stringify(profiles, undefined, 2), (err) => {
       if (err) {
         core.setFailed(err.message);
