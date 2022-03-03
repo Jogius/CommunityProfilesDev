@@ -27,4 +27,4 @@ jobs:
       # Created summary file
       - uses: borales/actions-yarn@v2.3.0
         with:
-          cmd: run # will run `yarn run` command
+          cmd: start # will run `yarn start` command
