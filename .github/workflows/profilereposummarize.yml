@@ -4,6 +4,7 @@ on:
   # Run on every push on the master branch
   push:
     branches: [ master ]
+    paths-ignore: ProfilesSummary.json
 
   # Allow to run this workflow manually
   workflow_dispatch:
@@ -32,5 +33,11 @@ jobs:
     - name: Save artifact
       uses: actions/upload-artifact@v3
       with:
-        name: profiles.json
-        path: ./.github/workflows/ProfileRepoSummarizeAction/profiles.json
+        name: ProfilesSummary.json
+        path: ./.github/workflows/ProfileRepoSummarizeAction/ProfilesSummary.json
+    - name: Update ProfilesSummary.json in repository
+      run: /bin/cp ./.github/workflows/ProfileRepoSummarizeAction/ProfilesSummary.json .
+    - name: Update file in repository
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: (Auto Commit) Update 'ProfilesSummary.json'
