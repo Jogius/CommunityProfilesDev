@@ -4,18 +4,25 @@ const fs = require('fs');
 
 (async () => {
   try {
+    // github api token, passed through environment variables because github secrets didn't work
     const githubToken = process.env['token'];
 
     const client = github.getOctokit(githubToken);
 
-    let owner = github.context.payload.repository.owner.name;
-    let repo = github.context.payload.repository.name;
+    const owner = github.context.payload.repository.owner.name;
+    const repo = github.context.payload.repository.name;
+
+    // helper function for requesting content from github api
+    const getContent = async (path) => {
+      await client.rest.repos.getContent({
+        owner,
+        repo,
+        path,
+      });
+    };
   
-    const customProfilesRepoContent = await client.rest.repos.getContent({
-      owner,
-      repo,
-      path: "CustomProfiles",
-    });
+    // get content of the entire 'CommunityProfiles' repository
+    const customProfilesRepoContent = await getContent("CustomProfiles");
 
     const profiles = [];
   
@@ -24,41 +31,41 @@ const fs = require('fs');
       // return if element not directory
       if (profile.type != 'dir') return;
 
-      const profileContent = await client.rest.repos.getContent({
-        owner,
-        repo,
-        path: profile.path,
-      });
-      console.log(`profile ${profile.path} data:\n\n${JSON.stringify(profileContent.data, undefined, 2)}`);
+      // get content of profile folder
+      const profileContent = await getContent(profile.path);
 
+      // try finding 'about.json' file path
       const aboutFilePath = (profileContent.data.find((file) => file.name == 'about.json'))?.path;
-      if (aboutFilePath == undefined) return;
+      if (aboutFilePath == undefined) {
+        console.log(`Profile '${profile.name}' has no 'about.json' file. Continuing with next profile...`);
+        continue;
+      }
 
-      const aboutFileContent = await client.rest.repos.getContent({
-        owner,
-        repo,
-        path: aboutFilePath,
-      });
-      // console.log(`aboutFileContent: ${JSON.stringify(aboutFileContent, undefined, 2)}`);
-
+      // get and parse content of 'about.json' file
+      const aboutFileContent = await getContent(aboutFilePath);
       const aboutFile = JSON.parse(Buffer.from(aboutFileContent.data.content, aboutFileContent.data.encoding).toString());
-      // console.log(aboutFileContent.data.content);
-      // console.log(Buffer.from(aboutFileContent.data.content, aboutFileContent.data.encoding).toString());
-      // console.log(aboutFile.Authors);
-      // console.log(aboutFile.Description);
 
-      let imageUrl = (profileContent.data.find((file) => file.name.endsWith('.jpg') || file.name.endsWith('.png')))?.download_url;
-      // console.log(`imageUrl: ${imageUrl}`);
+      // try finding 'xxx.profile.json' download url
+      const profileUrl = (profileContent.data.find((file) => file.name.endsWith('.profile.json')))?.download_url;
+      if (profileUrl == undefined) {
+        console.log(`Profile '${profile.name}' has no 'xxx.profile.json' file. Continuing with next profile...`);
+        continue;
+      }
+
+      // try finding image url
+      const imageUrl = (profileContent.data.find((file) => file.name.endsWith('.jpg') || file.name.endsWith('.png')))?.download_url;
+      if (imageUrl)
+        console.log(`Profile '${profile.name}' has no image ('.jpg' or '.png') file. Ignoring...`)
       
       profiles.push({
         name: profile.name,
         description: aboutFile.Description,
-        authors: aboutFile.authors,
-        imageUrl: imageUrl ? imageUrl : "",
+        authors: aboutFile.Authors,
+        version: aboutFile.Version,
+        imageUrl: imageUrl || "",
+        profileUrl: profileUrl,
       });
     }));
-
-    console.log(`profiles: ${profiles}`);
 
     fs.writeFile('./profiles.json', JSON.stringify(profiles, undefined, 2), (err) => {
       if (err) {
