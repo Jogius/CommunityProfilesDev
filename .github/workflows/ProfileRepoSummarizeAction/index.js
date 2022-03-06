@@ -67,6 +67,7 @@ const fs = require('fs');
       });
     }));
 
+    // write to file
     fs.writeFile('./ProfilesSummary.json', JSON.stringify(profiles, undefined, 2), (err) => {
       if (err) {
         core.setFailed(err.message);

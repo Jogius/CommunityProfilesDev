@@ -1,12 +1,12 @@
 name: AudioBandProfileRepoSummarize
 
 on:
-  # Run on every push on the master branch
+  # run on every push on the master branch, but ignore the auto-commits on 'ProfilesSummary.json'
   push:
     branches: [ master ]
     paths-ignore: ProfilesSummary.json
 
-  # Allow to run this workflow manually
+  # allow to run this workflow manually
   workflow_dispatch:
 
 jobs:
@@ -15,28 +15,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # checkout repository
     - uses: actions/checkout@v2
+    # create node environment
     - name: Use Node.js 16
       uses: actions/setup-node@v2
       with:
         node-version: 16
         cache: 'npm'
         cache-dependency-path:  ./.github/workflows/ProfileRepoSummarizeAction
+    # install dependencies
     - name: Install dependencies
       working-directory: ./.github/workflows/ProfileRepoSummarizeAction
       run: npm ci
     - name: Run script
       working-directory: ./.github/workflows/ProfileRepoSummarizeAction
       run: npm run start
-      env: # Pass GitHub Token to script
+      env: # pass github token to script via environment variables
         token: ${{ secrets.GITHUB_TOKEN }}
+    # save summary to an artifact
     - name: Save artifact
       uses: actions/upload-artifact@v3
       with:
         name: ProfilesSummary.json
         path: ./.github/workflows/ProfileRepoSummarizeAction/ProfilesSummary.json
+    # move 'ProfilesSummary.json' & overwrite version in repository
     - name: Update ProfilesSummary.json in repository
       run: mv -f ./.github/workflows/ProfileRepoSummarizeAction/ProfilesSummary.json .
+    # commit and push changes to repository
     - name: Update file in repository
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
