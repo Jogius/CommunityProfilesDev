@@ -54,7 +54,7 @@ const fs = require('fs');
 
       // try finding image url
       const imageUrl = (profileContent.data.find((file) => file.name.endsWith('.jpg') || file.name.endsWith('.png')))?.download_url;
-      if (imageUrl)
+      if (imageUrl == undefined)
         console.log(`Profile '${profile.name}' has no image ('.jpg' or '.png') file. Ignoring...`)
       
       profiles.push({
