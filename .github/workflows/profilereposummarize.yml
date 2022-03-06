@@ -36,7 +36,7 @@ jobs:
         name: ProfilesSummary.json
         path: ./.github/workflows/ProfileRepoSummarizeAction/ProfilesSummary.json
     - name: Update ProfilesSummary.json in repository
-      run: /bin/cp ./.github/workflows/ProfileRepoSummarizeAction/ProfilesSummary.json .
+      run: mv -f ./.github/workflows/ProfileRepoSummarizeAction/ProfilesSummary.json .
     - name: Update file in repository
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
