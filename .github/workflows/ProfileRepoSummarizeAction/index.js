@@ -14,7 +14,7 @@ const fs = require('fs');
 
     // helper function for requesting content from github api
     const getContent = async (path) => {
-      await client.rest.repos.getContent({
+      return await client.rest.repos.getContent({
         owner,
         repo,
         path,
@@ -38,7 +38,7 @@ const fs = require('fs');
       const aboutFilePath = (profileContent.data.find((file) => file.name == 'about.json'))?.path;
       if (aboutFilePath == undefined) {
         console.log(`Profile '${profile.name}' has no 'about.json' file. Continuing with next profile...`);
-        continue;
+        return;
       }
 
       // get and parse content of 'about.json' file
@@ -49,7 +49,7 @@ const fs = require('fs');
       const profileUrl = (profileContent.data.find((file) => file.name.endsWith('.profile.json')))?.download_url;
       if (profileUrl == undefined) {
         console.log(`Profile '${profile.name}' has no 'xxx.profile.json' file. Continuing with next profile...`);
-        continue;
+        return;
       }
 
       // try finding image url
