@@ -62,7 +62,7 @@ const fs = require('fs');
         description: aboutFile.Description,
         authors: aboutFile.Authors,
         version: aboutFile.Version,
-        imageUrl: imageUrl || "",
+        imageUrl: imageUrl,
         profileUrl: profileUrl,
       });
     }));
